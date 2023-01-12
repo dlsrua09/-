@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자페이지-댓글리스트조회</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <style>
+    /* 폰트 */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+    @font-face {
+    font-family: 'MaplestoryOTFBold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFBold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    /* h1, #div-wrapper-side {
+      font-family: 'MaplestoryOTFBold';
+    } */
+
+
+    /* 페이지 전체 */
+    #container { width: 1200px; margin: auto;}
+    #wrapper01 {display: flex; width: 1200px;}
+
+    /* 헤더 */
+    #header {
+    width: 100%; height: 90px;
+     display:flex;
+    background-color: white;
+    }
+
+    /* header-logo */
+    #header-logo { 
+      width:23%; cursor:pointer;
+      margin-top: 10px;
+      margin-left:1%;
+    }
+    #header-logo:hover {
+      box-shadow:5px -7px 5px #E6E6E6;  
+    }
+
+    #header-h2 { 
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom:-80px;
+      display: inline-block;
+      line-height: unset;
+    }
+
+    #header-balloon { 
+      transform:rotate(35deg); 
+      width:35px;
+      height: 35px;    
+    }
+
+    #header-h4 {
+      font-size: 1rem;
+      font-weight: bold;
+
+    }
+
+    /* header-search */
+    #header-search-wrapper {
+      width:59%; 
+      border-radius: 30px;
+      display:flex; justify-content:center;
+      align-items: center; border:none;
+    }
+
+    #header-search { 
+      width:400px; height:40px;
+      border-radius: 30px; border:1px solid lightgray;
+      display: flex; align-items: center;
+    }
+
+
+    #header-search-img { 
+      width:25px; padding:15px; 
+      box-sizing: content-box;
+      display:flex; align-items:center;
+    }
+
+    #header-search-input {
+      width:300px; height:35px; font-size:0.9rem;   
+      border:none; outline:none; background:transparent;
+    }
+
+
+    #header-search-wrapper #header-search:hover {
+      background-color: #F2F2F2; box-shadow: 5px 5px 5px gray;
+      border:none;
+    }
+
+    /* header-login, join */
+    #header-login {  
+      width:18%; margin-top: 20px;
+      align-items: center; display:flex;
+      justify-content: flex-end;
+    }
+
+
+    #header-login-ul {
+      padding:15px; box-sizing: content-box; 
+      display: flex; align-items: center;
+    }
+
+    #header-login-ul:hover { 
+      background-color:#F2F2F2; border-radius: 30px;
+      box-shadow: 5px 5px 5px gray;
+    }
+
+    #header-login-ul li {
+      text-decoration:none; display:inline-block; 
+    }
+
+    #header-login-ul-image {
+      width:15px; margin-bottom: 3px;
+    }
+
+    /* nav */
+    #nav { display: flex;}
+
+    #nav-image { width:100%; height:90px; margin-bottom:30px;}
+
+    #nav-ul {
+      width:1400px; position:absolute; display:flex; margin-top:24px;
+    } 
+
+    #nav-ul-li {
+      width:300px; display:flex; justify-content: space-around;
+    }
+
+
+
+    #nav-ul li:hover { text-decoration: underline;}
+
+    #nav-div-li { 
+      width: 800px; display:flex; justify-content: right;
+    }
+
+    #nav ul li { 
+      list-style:none; cursor:pointer; font-weight:bold;
+      font-size:1.18rem; color:white; 
+    }
+
+    #nav ul li:hover { 
+    color:black;  
+    }
+
+    #header-logo-top {
+      display: flex;
+    }
+
+    .header-logo-link { color: black; text-decoration: none;}
+    .header-logo-link:hover { color: black;}
+    .nav-list-link { color: white; text-decoration: none;}
+    .nav-list-link:hover { color: black; text-decoration: underline;}
+
+    /* 사이드메뉴 */
+    #side {
+       width:20%; height:600px; background-color: rgb(238, 45, 122); ; 
+       border-radius: 5px; font-weight: bold; 
+       font-size:1.2rem; float:left;
+       }
+    /* list 감싸는 div */
+    .sideList { 
+      width:100%; height:10%; display:flex; justify-content: right; align-items: center;
+      margin-left:1%;    
+    }
+    #sideImgWrapper {
+      margin-top: 120px;
+      width:100%; display:flex; justify-content: center; align-items: flex-end;       
+    }
+    #sideImg {
+      width:100%;
+    }   
+    .side-link { 
+      width:95%; height:70%; display:flex; justify-content: center; align-items: center;
+      color:white; text-decoration: none;  border:none;
+    }   
+    .side-link:hover {
+      background-color: white; color: rgb(238, 45, 122); 
+      display:flex; justify-content: center; align-items: center; border:none;
+      border-top-left-radius: 40%; border-bottom-left-radius: 40%;
+    }  
+      
+     /* 메인 화면 */
+    #div-wrapper-main { text-align: center; width: 80%; margin-top: 10px;}
+    /* 메인 제목 */
+    #main-title { 
+      position: relative; justify-content: right;
+      width: 80%; margin: auto;
+    }
+    #main-title-img { 
+      position: absolute; top: -22px; right: 550px; 
+      width: 50px; transform:rotate(35deg); 
+    }
+    /* 폼 */
+    #searchForm { text-align: center; margin: auto; width: 80%; margin-top: 30px;}
+    #searchCondition { 
+      height: 30px; width: 30%; font-size: 0.9rem; 
+      border-radius: 5px; padding-left: 5px;}
+    #searchDiv { 
+      border: 1px solid black; border-radius: 5px; 
+      height: 30px;  padding: 0 0; width: 65%;
+    }
+    #searchInput { border: none;  padding: 0px; margin-top: 2px; width: 80%;}
+    #searchInput, select:focus  { outline: none;}
+    /* table 태그 */
+    .table-bordered { text-align: center; margin: auto; width: 80%;}    
+    table { 
+      border-bottom: 1px solid black;
+    }
+    th { 
+      background-color: #ee2d7a; font-size: 1.1rem; 
+      height: 50px; color: white;
+    }
+    td { height: 40px; font-size: 0.9rem;}
+    table tr:not(:first-of-type):hover { font-weight: bold; background-color: #F9FAFB; }
+    table tr:not(:first-of-type):hover a { text-decoration: underline }
+    .table-bordered { border-left: none; border-right: none;}
+    tr, th, td { border: none;}
+     /* a 태그 */
+    .linkMain { 
+      text-decoration-line : none; color : black
+    }
+    /* button 태그 */
+    button { 
+      border: none; border-radius: 5px; 
+      background-color: #ee2d7a; color: white;
+    }
+    #modelBtnDelete { width: 70px; height: 30px; font-weight: bold;}
+
+    /* pagination */
+    .page-item { margin: 50px 10px 0px; }
+    .page-link { 
+      width: 35px; height: 38px;
+      border: 1px solid lightgray; 
+      color: black; border-radius: 5px; font-weight: bold;
+    }
+    .page-link:hover { 
+      background-color: white; color: #ee2d7a;
+      border: 1px solid #ee2d7a; 
+    }
+    .page-link span { color: black; font-weight: bold}
+    .page-link:hover span { color: #ee2d7a;}
+    
+    
+
+    
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.2.js"
+  integrity="sha256-pkn2CUZmheSeyssYw3vMp1+xyub4m+e+QK4sQskvuo4="
+  crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" 
+  crossorigin="anonymous">
+    const myModal = document.getElementById('myModal')
+    const myInput = document.getElementById('myInput')
+
+    myModal.addEventListener('shown.bs.modal', () => {
+      myInput.focus()
+    })
+  </script>
+  <script>
+    let isAllSelected = false;
+
+    function checkSelectAll()  {
+    // 전체 체크박스
+    const checkboxes 
+      = document.querySelectorAll('input[name="number"]');
+    // 선택된 체크박스
+    const checked 
+      = document.querySelectorAll('input[name="number"]:checked');
+    // select all 체크박스
+    const selectAll 
+      = document.querySelector('button[name="selectall"]');
+
+    if(checkboxes.length === checked.length)  {
+      isAllSelected = true;
+      selectAll.textContent = "전체 해제";
+    }else {
+      isAllSelected = false;
+    }
+
+    }
+
+    function selectAll(selectAll)  {
+    const checkboxes 
+      = document.getElementsByName('number');
+    // 선택된 체크박스
+    const checked 
+      = document.querySelectorAll('input[name="number"]:checked');
+
+    const selectBtn 
+      = document.querySelector('button[name="selectall"]');
+    
+    if(isAllSelected) {
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+        selectBtn.textContent = "전체 선택";
+      });
+      isAllSelected = false;
+    } else {
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+      });
+      isAllSelected = true;
+      selectBtn.textContent = "전체 해제";
+    }
+  }
+
+    $(function() {
+      $("#modelBtnDelete").on("click", function() {
+        alert("댓글이 삭제되었습니다.")
+      })
+    })
+
+    
+  </script>
+</head>
+<body>
+  <div id="container">
+
+    <!-- header -->
+    <div id="header">
+      <div id="header-logo">
+        <a href="#" class="header-logo-link">
+          <div id="header-logo-top">
+            <h2 id="header-h2">Go Gi 1000</h2>
+            <img id="header-balloon" src="images/heart.png" width="25">
+          </div>
+          <div id="header-logo-bottom">
+            <h4 id="header-h4"><span style="color: rgb(238, 45, 122); ">고</span >민 없는 <span style="color: rgb(238, 45, 122); ">기</span>적의 <span style="color: rgb(238, 45, 122); ">1000</span>가지 추천 코스</h4>
+          </div>
+        </a>    
+      </div>
+      <div id="header-search-wrapper">
+        <div id="header-search">
+          <a href="#"><img id="header-search-img" src="images/search.png"></a>
+          <input type="search" id="header-search-input" placeholder="지역, 코스명, 음식점 또는 카페" 
+              onfocus="this.placeholder=''" onblur="placeholder='지역, 코스명, 음식점 또는 카페'">
+        </div>
+      </div>
+      <div id="header-login">
+        <ul id="header-login-ul">
+          <li>
+            <a href="#" class="header-logo-link"><img id="header-login-ul-image" src="images/user.png" >
+            로그인 또는 회원가입</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="nav">
+      <img id="nav-image" src="images/navstyle.png">
+      <ul id="nav-ul">
+        <div id="nav-ul-li">
+          <li><a href="#" class="nav-list-link">지역</a></li>
+          <li><a href="#" class="nav-list-link">이번주 랭킹</a></li>
+          <li><a href="#" class="nav-list-link">핫딜</a></li>
+        </div>
+        <div id="nav-div-li">
+          <li><a href="#" class="nav-list-link">마이페이지</a></li>
+        </div>
+      </ul>
+    </div>
+
+    <div id="wrapper01">
+
+      <!-- 사이드메뉴 -->
+      <div id="side">
+        <div class="sideList">
+          <a class="side-link" href="#">데이트 코스 등록</a>
+        </div>
+        <div class="sideList">
+          <a class="side-link" href="#">데이트 코스 리스트</a>
+        </div>
+        <div class="sideList">
+          <a class="side-link" href="#">핫딜 등록</a>
+        </div>
+        <div class="sideList">
+          <a class="side-link" href="#">핫딜 리스트</a>
+        </div>
+        <div class="sideList">
+          <a class="side-link" href="#">댓글 리스트</a>
+        </div>
+        <div id="sideImgWrapper">
+          <img id="sideImg" src="images/img05.png">
+        </div>
+      </div>
+
+          <!-- 메인 화면 -->
+          <div id="div-wrapper-main">
+            <!-- 페이지 제목 -->
+            <div id="main-title">
+              <h1 style="margin: 0; float: left;" >댓글 리스트</h1>
+              <img id="main-title-img" src="images/heartBalloon.png" alt="">
+                 
+            </div>
+            <hr style="margin: auto; width: 80%;">
+
+          <!-- 전체 선택 및 검색 기능 구현 -->
+          <form id="searchForm" action="">
+            <div class="row" style="margin: auto;" >
+              <div class="col" style="margin: 10px; padding-left: 0px;">
+                <div style="float: left; height: 30px;">              
+                  <button type="button" name='selectall' 
+                    value='selectall'
+                    onclick='selectAll(this)'>
+                      전체 선택
+                  </button>
+                  <button>삭제</button>
+                </div>
+              </div>
+              <div class="col" style="margin: 10px 5px 10px 15px;">
+                <div class="row" style="justify-content: right; padding: 0px; ">
+                  <select id="searchCondition" name="searchCondition" id="" aria-labelledby="state" >
+                    <option value="ALL">전체</option>
+                    <option value="TITLE">게시글 제목</option>
+                    <option value="ID">아이디</option>
+                    <option value="CONTENT">내용</option>
+                    <option value="RGDDATE">작성일자</option>
+                  </select>&ensp;
+                  <div id="searchDiv">
+                    <input id="searchInput" type="text" name="searchKeyword" value="">&ensp;
+                    <img src="images/search.png" alt="" style="height: 25px; padding: 0px; margin-bottom: 3px; width: 11%;">
+                  </div>                  
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <!-- 댓글 내용 출력 -->
+          <div >
+            <table class="table-bordered">
+              <tr style="width: 100%;">
+                <th scope="col" style="width: 6%;">선택<img src="" alt=""></th>
+                <th scope="col" style="width: 6%;">번호</th>
+                <th scope="col" style="width: 20%;">게시글 제목</th>
+                <th scope="col" style="width: 16%;">아이디</th>
+                <th scope="col" style="width: 40%;">내용</th>
+                <th scope="col" style="width: 12%;">작성일자</th>
+              </tr>
+              <tr>
+                <td>
+                  <label for="chk1" style="width: 25px;">
+                    <input type="checkbox" id="chk1" name='number' value='' onclick='checkSelectAll()'>
+                  </label>
+                </td>
+                <td>1</td>
+                <td>음식점01</td>
+                <td>test_user01</td>
+                <!-- 모달 출력하는 링크 -->
+                <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                <td>xxxx.xx.xx</td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                <td>1</td>
+                <td>음식점01</td>
+                <td>test_user01</td>
+
+                <!-- 모달 출력하는 링크 -->
+                <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                <td>xxxx.xx.xx</td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                <td>1</td>
+                <td>음식점01</td>
+                <td>test_user01</td>
+
+                <!-- 모달 출력하는 링크 -->
+                <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                <td>xxxx.xx.xx</td>
+              </tr>
+                <tr>
+                  <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                  <td>1</td>
+                  <td>음식점01</td>
+                  <td>test_user01</td>
+
+                  <!-- 모달 출력하는 링크 -->
+                  <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                  <td>xxxx.xx.xx</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                  <td>1</td>
+                  <td>음식점01</td>
+                  <td>test_user01</td>
+
+                  <!-- 모달 출력하는 링크 -->
+                  <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                  <td>xxxx.xx.xx</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                  <td>1</td>
+                  <td>음식점01</td>
+                  <td>test_user01</td>
+
+                  <!-- 모달 출력하는 링크 -->
+                  <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                  <td>xxxx.xx.xx</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                  <td>1</td>
+                  <td>음식점01</td>
+                  <td>test_user01</td>
+
+                  <!-- 모달 출력하는 링크 -->
+                  <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                  <td>xxxx.xx.xx</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                  <td>1</td>
+                  <td>음식점01</td>
+                  <td>test_user01</td>
+
+                  <!-- 모달 출력하는 링크 -->
+                  <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                  <td>xxxx.xx.xx</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                  <td>1</td>
+                  <td>음식점01</td>
+                  <td>test_user01</td>
+
+                  <!-- 모달 출력하는 링크 -->
+                  <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                  <td>xxxx.xx.xx</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                  <td>1</td>
+                  <td>음식점01</td>
+                  <td>test_user01</td>
+
+                  <!-- 모달 출력하는 링크 -->
+                  <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                  <td>xxxx.xx.xx</td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                  <td>1</td>
+                  <td>음식점01</td>
+                  <td>test_user01</td>
+
+                  <!-- 모달 출력하는 링크 -->
+                  <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                  <td>xxxx.xx.xx</td>
+                </tr>
+                <tr>
+                  <tr>
+                    <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                    <td>1</td>
+                    <td>음식점01</td>
+                    <td>test_user01</td>
+  
+                    <!-- 모달 출력하는 링크 -->
+                    <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                    <td>xxxx.xx.xx</td>
+                  </tr>
+                  <tr>
+                    <tr>
+                      <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                      <td>1</td>
+                      <td>음식점01</td>
+                      <td>test_user01</td>
+    
+                      <!-- 모달 출력하는 링크 -->
+                      <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                      <td>xxxx.xx.xx</td>
+                    </tr>
+                    <tr>
+                      <tr>
+                        <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                        <td>1</td>
+                        <td>음식점01</td>
+                        <td>test_user01</td>
+      
+                        <!-- 모달 출력하는 링크 -->
+                        <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                        <td>xxxx.xx.xx</td>
+                      </tr>
+                      <tr>
+                        <tr>
+                          <td><input type="checkbox" name='number' value='' onclick='checkSelectAll()'></td>
+                          <td>1</td>
+                          <td>음식점01</td>
+                          <td>test_user01</td>
+        
+                          <!-- 모달 출력하는 링크 -->
+                          <td><a href="" class="linkMain" data-bs-toggle="modal" data-bs-target="#exampleModal">너무 맛있어요 뭐시기저시기...</a></td>
+                          <td>xxxx.xx.xx</td>
+                        </tr>
+            </table>
+            <div style="width: 80%; margin: auto;">
+              <span style="font-size: small; float: right;">총 댓글 갯수 : <span style="font-weight: bold; color: red;">xx</span>개</span>
+            </div> 
+          </div>
+          <!-- 페이징 -->
+          <br>
+          <nav aria-label="Page navigation example" style="margin: auto; width: 80%;" >
+            <ul class="pagination justify-content-center" >
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&lt;</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">5</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&gt;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+    </div>
+  </div>
+
+
+
+  <!-- 모달 -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- 아이디 출력 -->
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            <img src="images/user.png" alt="" style="height: 30px;">&ensp;test_user01님의 댓글</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <br>
+        </div>
+
+        <!-- 댓글 내용 출력 -->
+        <div class="modal-body" style="text-align: center; width: 100%;">
+          <p style="float: right; margin: 0px 10px 0px 0px;">작성일자 : xxxx.xx.xx</p>
+          <textarea class="overflow-auto" readonly style="width: 750px; height: 300px; resize: none;">
+            모든 국민은 주거의 자유를 침해받지 아니한다. 
+            주거에 대한 압수나 수색을 할 때에는 검사의 신청에 의하여 법관이 발부한 영장을 제시하여야 한다. 
+            대통령은 전시·사변 또는 이에 준하는 국가비상사태에 있어서 병력으로써 군사상의 필요에 응하거나 공공의 안녕질서를 유지할 필요가 있을 때에는 법률이 정하는 바에 의하여 계엄을 선포할 수 있다.
+          </textarea>
+        </div>
+
+        <!-- 삭제 -->
+        <div class="modal-footer">        
+          <button id="modelBtnDelete" type="button" aria-label="Close" data-bs-dismiss="modal">삭제</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
